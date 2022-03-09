@@ -1,12 +1,17 @@
 package com.example.senku;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
-import android.widget.GridView;
+import android.widget.Chronometer;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,18 +19,31 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class CellAdapter extends ArrayAdapter<CellModel> {
     int[][] grid;
     boolean selected = false;
-    GridView gridView;
+
+    Context context;
     ViewGroup viewGroup;
 
+    TextView move_counter;
+    int moves = 0;
+    Chronometer timer;
+
     public CellAdapter(@NonNull Context context, ArrayList<CellModel> cellModelArrayList,
-                       int[][] selectedGrid, GridView gV) {
+                       int[][] selectedGrid, TextView move_count, Chronometer time) {
         super(context, 0, cellModelArrayList);
+        this.context = context;
+
         grid = selectedGrid;
-        gridView = gV;
+        move_counter = move_count;
+        timer = time;
+        checkWin();
+
+        timer.setBase(SystemClock.elapsedRealtime());
+        timer.start();
     }
 
     @NonNull
@@ -44,9 +62,12 @@ public class CellAdapter extends ArrayAdapter<CellModel> {
         ImageView cellBg = listItemView.findViewById(R.id.cellBg);
         ImageView cellCircle = listItemView.findViewById(R.id.cellCircle);
 
-        //We check if the grid is 8x8 and adjust the size
+        //We check the grid size and adjust its dimensions
         if (cellModel.getGridSize() == 8) {
             int cellSize = (int) getContext().getResources().getDimension(R.dimen.cell_size_sm);
+            cellCard.setLayoutParams(new ViewGroup.LayoutParams(cellSize, cellSize));
+        } else if (cellModel.getGridSize() == 9) {
+            int cellSize = (int) getContext().getResources().getDimension(R.dimen.cell_size_sm2);
             cellCard.setLayoutParams(new ViewGroup.LayoutParams(cellSize, cellSize));
         }
 
@@ -64,22 +85,20 @@ public class CellAdapter extends ArrayAdapter<CellModel> {
             listItemView.setOnClickListener(view -> checkClick(cellModel, cellCircle));
 
         } else {
-            cellBg.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.cell_transparent));
+            cellCard.setVisibility(View.INVISIBLE);
         }
 
         return listItemView;
     }
 
     private void checkClick(CellModel cellModel, ImageView cellCircle) {
-        if (!selected && grid[cellModel.getRow()][cellModel.getCol()] == 1) {
-            //Select valid cell
-            cellCircle.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.cell_selected));
+        Animation select = AnimationUtils.loadAnimation(cellCircle.getContext(), R.anim.select);
+        Animation deselect = AnimationUtils.loadAnimation(cellCircle.getContext(), R.anim.deselect);
 
+        if (cellModel.isPossible()) {
+            //We make the move and delete all other suggestions
             checkDirection(cellModel);
-
-            cellModel.setSelected(true);
-            selected = true;
-
+            removePossible();
         } else if (selected && cellModel.isSelected()) {
             //Deselect selected cell
             cellCircle.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.cell_token));
@@ -89,8 +108,19 @@ public class CellAdapter extends ArrayAdapter<CellModel> {
             cellModel.setSelected(false);
             selected = false;
 
-        } else if (cellModel.isPossible()) {
+            cellCircle.startAnimation(deselect);
+
+        } else if (!selected && grid[cellModel.getRow()][cellModel.getCol()] == 1) {
+            //Select valid cell
+            cellCircle.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.cell_selected));
+
             checkDirection(cellModel);
+
+            cellModel.setSelected(true);
+            selected = true;
+
+            cellCircle.startAnimation(select);
+
         }
     }
 
@@ -158,39 +188,70 @@ public class CellAdapter extends ArrayAdapter<CellModel> {
         ImageView imageView1 = viewGroup.getChildAt(index1).findViewById(R.id.cellCircle);
         ImageView imageView2 = viewGroup.getChildAt(index2).findViewById(R.id.cellCircle);
 
-        CellModel cell = getItem(index2);
+        CellModel cell = getItem(index);
+        CellModel cell1 = getItem(index1);
+        CellModel cell2 = getItem(index2);
+
 
         if (pos1 == 1 && pos2 == 2) {
             //We mark all possible moves
             if (!selected) {
                 imageView2.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.cell_possible));
-                cell.setPossible(true);
+                Animation possible = AnimationUtils.loadAnimation(imageView2.getContext(), R.anim.possible);
+                imageView2.startAnimation(possible);
+                cell2.setPossible(true);
             } else {
                 imageView2.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.cell_transparent));
-                cell.setPossible(false);
+                cell2.setPossible(false);
             }
         }
 
         //We move the token 2 positions a remove de middle one
-        if (cell.isSelected() && getItem(index).isPossible()) {
-
+        if (cell2.isSelected() && cell.isPossible()) {
             imageView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.cell_token));
-            imageView1.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.cell_transparent));
-            imageView2.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.cell_transparent));
 
             grid[cellModel.getRow()][cellModel.getCol()] = 1;
             grid[cellModel.getRow() + y][cellModel.getCol() + x] = 2;
             grid[cellModel.getRow() + (y * 2)][cellModel.getCol() + (x * 2)] = 2;
 
             selected = false;
-            getItem(index).setSelected(false);
-            getItem(index).setPossible(false);
 
-            getItem(index1).setPossible(false);
+            cell.setSelected(false);
+            cell.setPossible(false);
 
-            getItem(index2).setPossible(false);
+            cell1.setSelected(false);
+            cell1.setPossible(false);
 
-            removePossible();
+            cell2.setSelected(false);
+            cell2.setPossible(false);
+
+            Animation move = AnimationUtils.loadAnimation(imageView.getContext(), R.anim.move);
+            Animation move2 = AnimationUtils.loadAnimation(imageView.getContext(), R.anim.move2);
+
+            imageView.startAnimation(move);
+            imageView1.startAnimation(move2);
+            imageView2.startAnimation(move2);
+
+            addMove();
+            checkWin();
+
+            move2.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    imageView1.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.cell_transparent));
+                    imageView2.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.cell_transparent));
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
         }
 
     }
@@ -207,5 +268,62 @@ public class CellAdapter extends ArrayAdapter<CellModel> {
         }
     }
 
+    private void addMove() {
+        moves++;
+        move_counter.setText(moves + " Moves");
+    }
+
+    private void checkWin() {
+        int possible_moves = 0;
+        int ones = 0;
+
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid.length; j++) {
+                if (grid[i][j] == 1) ones++;
+                if (i - 2 >= 0 && j - 2 >= 0 &&
+                        i + 2 < grid.length && j + 2 < grid.length) {
+                    possible_moves += checking(i, j, 1, 0) +
+                            checking(i, j, -1, 0) +
+                            checking(i, j, 0, 1) +
+                            checking(i, j, 0, -1);
+
+
+                }
+            }
+        }
+
+        if (possible_moves == 0) {
+            Intent intent = new Intent(getContext(), GameOver.class);
+
+            if (ones == 1) {
+                intent.putExtra("title", "YOU WIN");
+                intent.putExtra("bonus", 1.5);
+            } else {
+                intent.putExtra("title", "YOU LOSE");
+                intent.putExtra("bonus", 1.0);
+            }
+
+            intent.putExtra("moves", moves);
+
+            long elapsedMillis = SystemClock.elapsedRealtime() - timer.getBase();
+            intent.putExtra("ms", elapsedMillis);
+
+            timer.stop();
+            context.startActivity(intent);
+        }
+
+    }
+
+    private int checking(int i, int j, int x, int y) {
+        int value1 = grid[i][j];
+        int value2 = grid[i + x][j + y];
+        int value3 = grid[i + (x * 2)][j + (y * 2)];
+
+        if (value1 == 1 && value2 == 1 && value3 == 2) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
 }
 

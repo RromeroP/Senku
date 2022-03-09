@@ -9,10 +9,16 @@
         <entry key="..\:/Users/Dam/StudioProjects/Senku/app/src/main/res/drawable/cell_bg.xml" value="0.1" />
         <entry key="..\:/Users/Dam/StudioProjects/Senku/app/src/main/res/drawable/cell_possible.xml" value="0.1" />
         <entry key="..\:/Users/Dam/StudioProjects/Senku/app/src/main/res/drawable/cell_selected.xml" value="0.1" />
+        <entry key="..\:/Users/Dam/StudioProjects/Senku/app/src/main/res/drawable/cell_token.xml" value="0.1525" />
         <entry key="..\:/Users/Dam/StudioProjects/Senku/app/src/main/res/drawable/cell_transparent.xml" value="0.1" />
         <entry key="..\:/Users/Dam/StudioProjects/Senku/app/src/main/res/drawable/cell_valid.xml" value="0.1" />
         <entry key="..\:/Users/Dam/StudioProjects/Senku/app/src/main/res/drawable/empty_cell.xml" value="0.13518518518518519" />
-        <entry key="..\:/Users/Dam/StudioProjects/Senku/app/src/main/res/layout/activity_main.xml" value="0.264" />
+        <entry key="..\:/Users/Dam/StudioProjects/Senku/app/src/main/res/drawable/peg_bg.xml" value="0.134" />
+        <entry key="..\:/Users/Dam/StudioProjects/Senku/app/src/main/res/drawable/score_bg.xml" value="0.2595" />
+        <entry key="..\:/Users/Dam/StudioProjects/Senku/app/src/main/res/drawable/table_bg.xml" value="0.1" />
+        <entry key="..\:/Users/Dam/StudioProjects/Senku/app/src/main/res/drawable/transparent_bg.xml" value="0.223" />
+        <entry key="..\:/Users/Dam/StudioProjects/Senku/app/src/main/res/layout/activity_game_over.xml" value="0.4" />
+        <entry key="..\:/Users/Dam/StudioProjects/Senku/app/src/main/res/layout/activity_main.xml" value="0.4" />
         <entry key="..\:/Users/Dam/StudioProjects/Senku/app/src/main/res/layout/cells.xml" value="0.8" />
         <entry key="..\:/Users/dam/AndroidStudioProjects/Senku/app/src/main/res/drawable/border.xml" value="0.25" />
         <entry key="..\:/Users/dam/AndroidStudioProjects/Senku/app/src/main/res/drawable/border_corner.xml" value="1.1" />

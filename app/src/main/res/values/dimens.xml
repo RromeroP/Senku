@@ -4,5 +4,7 @@
     <dimen name="spacing">5dp</dimen>
     <dimen name="cell_size">50dp</dimen>
     <dimen name="cell_size_sm">45dp</dimen>
+    <dimen name="cell_size_sm2">40dp</dimen>
     <dimen name="circle_size">45dp</dimen>
+    <dimen name="circle_size2">40dp</dimen>
 </resources>
