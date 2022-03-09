@@ -3,6 +3,17 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Dam/StudioProjects/Senku/app/src/main/res/drawable-v24/cell_transparent.xml" value="0.1" />
+        <entry key="..\:/Users/Dam/StudioProjects/Senku/app/src/main/res/drawable/border.xml" value="0.13518518518518519" />
+        <entry key="..\:/Users/Dam/StudioProjects/Senku/app/src/main/res/drawable/border_corner.xml" value="0.13518518518518519" />
+        <entry key="..\:/Users/Dam/StudioProjects/Senku/app/src/main/res/drawable/cell_bg.xml" value="0.1" />
+        <entry key="..\:/Users/Dam/StudioProjects/Senku/app/src/main/res/drawable/cell_possible.xml" value="0.1" />
+        <entry key="..\:/Users/Dam/StudioProjects/Senku/app/src/main/res/drawable/cell_selected.xml" value="0.1" />
+        <entry key="..\:/Users/Dam/StudioProjects/Senku/app/src/main/res/drawable/cell_transparent.xml" value="0.1" />
+        <entry key="..\:/Users/Dam/StudioProjects/Senku/app/src/main/res/drawable/cell_valid.xml" value="0.1" />
+        <entry key="..\:/Users/Dam/StudioProjects/Senku/app/src/main/res/drawable/empty_cell.xml" value="0.13518518518518519" />
+        <entry key="..\:/Users/Dam/StudioProjects/Senku/app/src/main/res/layout/activity_main.xml" value="0.264" />
+        <entry key="..\:/Users/Dam/StudioProjects/Senku/app/src/main/res/layout/cells.xml" value="0.8" />
         <entry key="..\:/Users/dam/AndroidStudioProjects/Senku/app/src/main/res/drawable/border.xml" value="0.25" />
         <entry key="..\:/Users/dam/AndroidStudioProjects/Senku/app/src/main/res/drawable/border_corner.xml" value="1.1" />
         <entry key="..\:/Users/dam/AndroidStudioProjects/Senku/app/src/main/res/drawable/empty_cell.xml" value="0.1" />
@@ -13,7 +24,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

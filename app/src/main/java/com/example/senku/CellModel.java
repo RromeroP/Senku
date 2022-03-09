@@ -2,22 +2,39 @@ package com.example.senku;
 
 public class CellModel {
 
-    private String bgRotation;
+    private boolean isSelected;
+    private boolean isPossible;
     private int bgId;
     private int circleId;
+    private int gridSize;
+    private int row;
+    private int col;
 
-    public CellModel(String bgRotation, int bgId, int circleId) {
-        this.bgRotation = bgRotation;
+    public CellModel(int bgId, int circleId, int gridSize, int row, int col) {
+        this.isSelected = false;
+        this.isPossible = false;
         this.bgId = bgId;
         this.circleId = circleId;
+        this.gridSize = gridSize;
+        this.row = row;
+        this.col = col;
     }
 
-    public String getBgRotation() {
-        return bgRotation;
+
+    public boolean isSelected() {
+        return isSelected;
     }
 
-    public void setBgRotation(String bgRotation) {
-        this.bgRotation = bgRotation;
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
+
+    public boolean isPossible() {
+        return isPossible;
+    }
+
+    public void setPossible(boolean possible) {
+        isPossible = possible;
     }
 
     public int getBgId() {
@@ -36,4 +53,27 @@ public class CellModel {
         this.circleId = circleId;
     }
 
+    public int getGridSize() {
+        return gridSize;
+    }
+
+    public void setGridSize(int gridSize) {
+        this.gridSize = gridSize;
+    }
+
+    public int getRow() {
+        return row;
+    }
+
+    public void setRow(int row) {
+        this.row = row;
+    }
+
+    public int getCol() {
+        return col;
+    }
+
+    public void setCol(int col) {
+        this.col = col;
+    }
 }
